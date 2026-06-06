@@ -1,1 +1,51 @@
-temp file
+1 . Maximum  subarray :-
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int currSum = nums[0];
+        int maxSum = nums[0];
+
+        for (int i = 1; i < nums.size(); i++) {
+            currSum = max(nums[i], currSum + nums[i]);
+            maxSum = max(maxSum, currSum);
+        }
+
+        return maxSum;
+    }
+};
+2 . contain duplicate :-
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        unordered_set<int> st;
+
+        for (int num : nums) {
+            if (st.count(num))
+                return true;
+            st.insert(num);
+        }
+
+        return false;
+    }
+};
+3 . Maximum average subarray 1 :-
+class Solution {
+public:
+    double findMaxAverage(vector<int>& nums, int k) {
+        long long sum = 0;
+
+        for (int i = 0; i < k; i++)
+            sum += nums[i];
+
+        long long maxSum = sum;
+
+        for (int i = k; i < nums.size(); i++) {
+            sum += nums[i] - nums[i - k];
+            maxSum = max(maxSum, sum);
+        }
+
+        return (double)maxSum / k;
+    }
+};
+
+
