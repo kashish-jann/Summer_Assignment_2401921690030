@@ -1,1 +1,111 @@
+1 . Group anagram :-
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
 
+        unordered_map<string, vector<string>> mp;
+
+        for(string str : strs)
+        {
+            string key = str;
+
+            sort(key.begin(), key.end());
+
+            mp[key].push_back(str);
+        }
+
+        vector<vector<string>> ans;
+
+        for(auto &it : mp)
+        {
+            ans.push_back(it.second);
+        }
+
+        return ans;
+    }
+};
+2 . String compmession :- 
+class Solution {
+public:
+    int compress(vector<char>& chars) {
+
+        int i = 0;      // read pointer
+        int index = 0;  // write pointer
+
+        while(i < chars.size())
+        {
+            char currChar = chars[i];
+            int count = 0;
+
+            // Count frequency of current character
+            while(i < chars.size() && chars[i] == currChar)
+            {
+                count++;
+                i++;
+            }
+
+            // Write character
+            chars[index++] = currChar;
+
+            // Write count if greater than 1
+            if(count > 1)
+            {
+                string cnt = to_string(count);
+
+                for(char ch : cnt)
+                {
+                    chars[index++] = ch;
+                }
+            }
+        }
+
+        return index;
+    }
+};
+3 . longest palindromic substring :-
+class Solution {
+public:
+    string longestPalindrome(string s) {
+
+        int start = 0;
+        int maxLen = 1;
+        int n = s.size();
+
+        for(int i = 0; i < n; i++)
+        {
+            // Odd length palindrome
+            int left = i;
+            int right = i;
+
+            while(left >= 0 && right < n && s[left] == s[right])
+            {
+                if(right - left + 1 > maxLen)
+                {
+                    maxLen = right - left + 1;
+                    start = left;
+                }
+
+                left--;
+                right++;
+            }
+
+            // Even length palindrome
+            left = i;
+            right = i + 1;
+
+            while(left >= 0 && right < n && s[left] == s[right])
+            {
+                if(right - left + 1 > maxLen)
+                {
+                    maxLen = right - left + 1;
+                    start = left;
+                }
+
+                left--;
+                right++;
+            }
+        }
+
+        return s.substr(start, maxLen);
+    }
+};
