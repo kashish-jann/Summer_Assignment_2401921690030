@@ -1,1 +1,89 @@
+1.Valid Parentheses :-
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> st;
 
+        for(char ch : s) {
+            if(ch == '(' || ch == '{' || ch == '[') {
+                st.push(ch);
+            }
+            else {
+                if(st.empty()) {
+                    return false;
+                }
+
+                if((ch == ')' && st.top() != '(') ||
+                   (ch == '}' && st.top() != '{') ||
+                   (ch == ']' && st.top() != '[')) {
+                    return false;
+                }
+
+                st.pop();
+            }
+        }
+
+        return st.empty();
+2 . Min Stack :-
+class MinStack {
+private:
+    stack<int> st;
+    stack<int> minSt;
+
+public:
+    MinStack() {
+    }
+
+    void push(int val) {
+        st.push(val);
+
+        if(minSt.empty() || val <= minSt.top()) {
+            minSt.push(val);
+        }
+    }
+
+    void pop() {
+        if(st.top() == minSt.top()) {
+            minSt.pop();
+        }
+
+        st.pop();
+    }
+
+    int top() {
+        return st.top();
+    }
+
+    int getMin() {
+        return minSt.top();
+    }
+};
+3. Next Greater Element I :-
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int, int> mp;
+        stack<int> st;
+
+        for (int num : nums2) {
+            while (!st.empty() && num > st.top()) {
+                mp[st.top()] = num;
+                st.pop();
+            }
+            st.push(num);
+        }
+
+        vector<int> ans;
+
+        for (int num : nums1) {
+            if (mp.find(num) != mp.end())
+                ans.push_back(mp[num]);
+            else
+                ans.push_back(-1);
+        }
+
+        return ans;
+    }
+};
+    }
+};
