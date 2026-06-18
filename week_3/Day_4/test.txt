@@ -1,89 +1,88 @@
-1.Valid Parentheses :-
+1. Daily Temperatures :-
 class Solution {
 public:
-    bool isValid(string s) {
-        stack<char> st;
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n = temperatures.size();
+        vector<int> ans(n, 0);
+        stack<int> st; // stores indices
 
-        for(char ch : s) {
-            if(ch == '(' || ch == '{' || ch == '[') {
-                st.push(ch);
-            }
-            else {
-                if(st.empty()) {
-                    return false;
-                }
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() &&
+                   temperatures[i] > temperatures[st.top()]) {
 
-                if((ch == ')' && st.top() != '(') ||
-                   (ch == '}' && st.top() != '{') ||
-                   (ch == ']' && st.top() != '[')) {
-                    return false;
-                }
-
+                int idx = st.top();
                 st.pop();
+
+                ans[idx] = i - idx;
             }
-        }
 
-        return st.empty();
-2 . Min Stack :-
-class MinStack {
-private:
-    stack<int> st;
-    stack<int> minSt;
-
-public:
-    MinStack() {
-    }
-
-    void push(int val) {
-        st.push(val);
-
-        if(minSt.empty() || val <= minSt.top()) {
-            minSt.push(val);
-        }
-    }
-
-    void pop() {
-        if(st.top() == minSt.top()) {
-            minSt.pop();
-        }
-
-        st.pop();
-    }
-
-    int top() {
-        return st.top();
-    }
-
-    int getMin() {
-        return minSt.top();
-    }
-};
-3. Next Greater Element I :-
-class Solution {
-public:
-    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-        unordered_map<int, int> mp;
-        stack<int> st;
-
-        for (int num : nums2) {
-            while (!st.empty() && num > st.top()) {
-                mp[st.top()] = num;
-                st.pop();
-            }
-            st.push(num);
-        }
-
-        vector<int> ans;
-
-        for (int num : nums1) {
-            if (mp.find(num) != mp.end())
-                ans.push_back(mp[num]);
-            else
-                ans.push_back(-1);
+            st.push(i);
         }
 
         return ans;
     }
 };
+2 . Evaluate Reverse Polish Notation :-
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> st;
+
+        for (string token : tokens) {
+
+            if (token == "+" || token == "-" ||
+                token == "*" || token == "/") {
+
+                int b = st.top();
+                st.pop();
+
+                int a = st.top();
+                st.pop();
+
+                if (token == "+")
+                    st.push(a + b);
+                else if (token == "-")
+                    st.push(a - b);
+                else if (token == "*")
+                    st.push(a * b);
+                else
+                    st.push(a / b);
+            }
+            else {
+                st.push(stoi(token));
+            }
+        }
+
+        return st.top();
+    }
+};
+3. Largest Rectangle in Histogram :-
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> st;
+        int n = heights.size();
+        int maxArea = 0;
+
+        for (int i = 0; i <= n; i++) {
+
+            while (!st.empty() &&
+                   (i == n || heights[st.top()] >= heights[i])) {
+
+                int height = heights[st.top()];
+                st.pop();
+
+                int leftSmaller =
+                    st.empty() ? -1 : st.top();
+
+                int width = i - leftSmaller - 1;
+
+                maxArea = max(maxArea, height * width);
+            }
+
+            st.push(i);
+        }
+
+        return maxArea;
     }
 };
