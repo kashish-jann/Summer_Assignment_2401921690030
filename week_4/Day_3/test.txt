@@ -1,1 +1,54 @@
+1. Search in a Binary Search Tree :-
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
 
+        if(root == NULL || root->val == val)
+            return root;
+
+        if(val < root->val)
+            return searchBST(root->left, val);
+
+        return searchBST(root->right, val);
+    }
+};
+2 . Validate Binary Search Tree :-
+class Solution {
+public:
+
+    bool isValid(TreeNode* root, long long minVal, long long maxVal) {
+
+        if(root == NULL)
+            return true;
+
+        if(root->val <= minVal || root->val >= maxVal)
+            return false;
+
+        return isValid(root->left, minVal, root->val) &&
+               isValid(root->right, root->val, maxVal);
+    }
+
+    bool isValidBST(TreeNode* root) {
+        return isValid(root, LLONG_MIN, LLONG_MAX);
+    }
+};
+3. Lowest Common Ancestor of a BST :-
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root,
+                                   TreeNode* p,
+                                   TreeNode* q) {
+
+        if(root->val > p->val &&
+           root->val > q->val)
+            return lowestCommonAncestor(
+                root->left, p, q);
+
+        if(root->val < p->val &&
+           root->val < q->val)
+            return lowestCommonAncestor(
+                root->right, p, q);
+
+        return root;
+    }
+};
