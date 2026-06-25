@@ -1,1 +1,74 @@
+1. Path Sum :-
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
 
+        if(root == NULL)
+            return false;
+
+        if(root->left == NULL &&
+           root->right == NULL)
+            return targetSum == root->val;
+
+        return hasPathSum(root->left,
+                         targetSum - root->val)
+            ||
+               hasPathSum(root->right,
+                         targetSum - root->val);
+    }
+};
+2. Diameter of Binary Tree :-
+class Solution {
+public:
+    int diameter = 0;
+
+    int height(TreeNode* root) {
+
+        if(root == NULL)
+            return 0;
+
+        int leftHeight = height(root->left);
+        int rightHeight = height(root->right);
+
+        diameter = max(diameter,
+                       leftHeight + rightHeight);
+
+        return 1 + max(leftHeight, rightHeight);
+    }
+
+    int diameterOfBinaryTree(TreeNode* root) {
+
+        height(root);
+
+        return diameter;
+    }
+};
+3. Binary Tree Maximum Path Sum :-
+class Solution {
+public:
+    int maxSum = INT_MIN;
+
+    int dfs(TreeNode* root) {
+
+        if(root == NULL)
+            return 0;
+
+        int leftGain = max(0, dfs(root->left));
+        int rightGain = max(0, dfs(root->right));
+
+        int currentPath =
+            leftGain + rightGain + root->val;
+
+        maxSum = max(maxSum, currentPath);
+
+        return root->val +
+               max(leftGain, rightGain);
+    }
+
+    int maxPathSum(TreeNode* root) {
+
+        dfs(root);
+
+        return maxSum;
+    }
+};
